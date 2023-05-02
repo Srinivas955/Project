@@ -2,14 +2,14 @@ package in.srinivas.springboot.service;
 
 import java.util.List;
 
-import in.srinivas.springboot.entity.User;
+import in.srinivas.springboot.dto.UserDto;
 
 public interface UserService {
 	
-	User saveUser(User user);
-	User getUserById(Integer userId);
-	List<User> getAllUsers();
-	User updateUser(User user);
+	UserDto saveUser(UserDto user);
+	UserDto getUserById(Integer userId);
+	List<UserDto> getAllUsers();
+	UserDto updateUser(UserDto user);
 	void deleteUser(Integer userId);
 
 }
