@@ -2,9 +2,12 @@ package in.srinivas.springboot.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.srinivas.springboot.entity.User;
+import in.srinivas.springboot.dto.UserDto;
 import in.srinivas.springboot.service.impl.UserServiceImpl;
 
 @RestController
@@ -26,34 +29,32 @@ public class UserController {
 	
 	
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody User user){
-		
-		User savedUser = userService.saveUser(user);
-		
+	public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user){
+		UserDto savedUser = userService.saveUser(user);
 		return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 	
 	}
 	
 	@GetMapping("{userId}")
-	public ResponseEntity<User> getUser(@PathVariable Integer userId){
+	public ResponseEntity<UserDto> getUser(@PathVariable Integer userId){
 		
-		User user = userService.getUserById(userId);
+		UserDto user = userService.getUserById(userId);
 		
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 		
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getUsers(){
-		List<User> allUsers = userService.getAllUsers();
-		return new ResponseEntity<List<User>>(allUsers, HttpStatus.OK);
+	public ResponseEntity<List<UserDto>> getUsers(){
+		List<UserDto> allUsers = userService.getAllUsers();
+		return new ResponseEntity<List<UserDto>>(allUsers, HttpStatus.OK);
 		
 	}
 	
 	@PutMapping("{userId}")
-	public ResponseEntity<User> updateUserById(@PathVariable Integer userId, @RequestBody User user){
-		User updateUser = userService.updateUser(user);
-		return new ResponseEntity<User>(updateUser, HttpStatus.OK);
+	public ResponseEntity<UserDto> updateUserById(@PathVariable Integer userId, @RequestBody @Valid UserDto user){
+		UserDto updateUser = userService.updateUser(user);
+		return new ResponseEntity<UserDto>(updateUser, HttpStatus.OK);
 		
 	}
 	
@@ -63,5 +64,18 @@ public class UserController {
 		return new ResponseEntity<String>("User has been deleted", HttpStatus.OK);
 		
 	}
+	
+	/*
+	 * @ExceptionHandler(ResourceNotFoundException.class) public
+	 * ResponseEntity<ErrorResponse>
+	 * handleResourceNotFoundException(ResourceNotFoundException exception,
+	 * WebRequest webRequest){ ErrorResponse errorResponse = new ErrorResponse(
+	 * LocalDateTime.now(), exception.getMessage(),
+	 * webRequest.getDescription(false), "user not found");
+	 * 
+	 * return new ResponseEntity<ErrorResponse>(errorResponse,
+	 * HttpStatus.NOT_FOUND); }
+	 */
+	
 
 }
